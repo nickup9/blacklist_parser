@@ -6,6 +6,7 @@ import re
 import csv
 
 # Make a new dir for the blacklist
+# Error handling necessary as mkdir will stop if dir exists
 try:
     os.mkdir('blacklist')
 except FileExistsError:
@@ -80,6 +81,8 @@ with open(blacklist_text, 'w') as blacklist:
             if row['HardVotePred'] == '1':
                 asn_list.append('AS' + row['ASN'])
 
+    # Convert list to dict and back to list again to remove duplicates.
     asn_list = list(dict.fromkeys(asn_list))
+    # Write to blacklist.txt
     for asn in asn_list:
         blacklist.write(asn + '\n')
